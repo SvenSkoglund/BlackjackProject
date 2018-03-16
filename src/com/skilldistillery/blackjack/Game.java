@@ -16,8 +16,13 @@ public class Game {
 	private void run(Scanner scanner) {
 		welcomeMessage();
 		player.name = scanner.nextLine();
+		
+		while (true) {
 		dealCards();
-
+		
+		
+		
+		}
 	}
 
 	private void welcomeMessage() {
@@ -30,7 +35,7 @@ public class Game {
 	
 	private void dealCards() {
 		deck.shuffle();
-		player.hand.addCard(deck.removeCard());
+		System.out.println("The dealer places one card face up in front of you, it is a " + player.hand.addCard(deck.removeCard());
 		dealer.hand.addCard(deck.removeCard());
 		player.hand.addCard(deck.removeCard());
 		dealer.hand.addCard(deck.removeCard());
