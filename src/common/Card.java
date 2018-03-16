@@ -1,4 +1,4 @@
-package Cards;
+package common;
 
 
 public class Card {

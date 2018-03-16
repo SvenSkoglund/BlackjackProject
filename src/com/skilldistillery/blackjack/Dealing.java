@@ -4,8 +4,8 @@ package com.skilldistillery.blackjack;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import Cards.Card;
-import Cards.Deck;
+import common.Card;
+import common.Deck;
 
 public class Dealing {
 	private Deck deck = new Deck();

@@ -1,4 +1,4 @@
-package Cards;
+package common;
 
 
 import java.util.List;
