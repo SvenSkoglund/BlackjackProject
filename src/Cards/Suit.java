@@ -1,4 +1,4 @@
-package com.skilldistillery.blackjack;
+package Cards;
 
 
 public enum Suit {

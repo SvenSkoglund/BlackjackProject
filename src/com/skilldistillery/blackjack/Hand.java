@@ -3,6 +3,8 @@ package com.skilldistillery.blackjack;
 import java.util.ArrayList;
 import java.util.List;
 
+import Cards.Card;
+
 public class Hand {
 
 	List<Card> hand = new ArrayList<>();

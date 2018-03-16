@@ -1,4 +1,4 @@
-package com.skilldistillery.blackjack;
+package Cards;
 
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class Deck {
 	// Add a method shuffle to shuffle the deck.
 	List <Card> cards = new ArrayList<>();
 	
-	Deck(){
+	public Deck(){
 		for (int i = 0; i < Suit.values().length; i++) {
 			for (int j = 0; j < Rank.values().length; j++) {
 				cards.add(new Card(Suit.values()[i],Rank.values()[j]));
