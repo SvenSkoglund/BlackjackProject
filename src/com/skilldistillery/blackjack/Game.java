@@ -22,34 +22,68 @@ public class Game {
 		player.name = scanner.nextLine();
 
 		while (true) {
+			int wager = placeBet(scanner);
 			dealCards();
-			turns(scanner);
+			turns(scanner, wager);
 			newGame(scanner);
 		}
 	}
 
-	private void turns(Scanner scanner) {
+	private void turns(Scanner scanner, int wager) {
 		int dealerScore = dealer.hand.getValueOfHand();
 		int playerScore = playerTurn(scanner);
+		if (playerScore > 21) {
+			handleBets(wager, -1);
+			return;
+		}
 		if (playerScore <= 21) {
 			dealerScore = dealerTurn(scanner);
+			if (dealerScore > 21) {
+				handleBets(wager, 1);
+				printLines();
+				return;
+			}
+			int winnerCounter = checkForWinner(playerScore, dealerScore);
+			handleBets(wager, winnerCounter);
+			printLines();
 		}
-		checkForWinner(playerScore, dealerScore);
-		printLines();
 	}
 
-	private void checkForWinner(int playerScore, int dealerScore) {
+	private void handleBets(int wager, int winnerCounter) {
+		if (winnerCounter == 1) {
+			player.wallet.setBalance(player.wallet.getBalance() + wager);
+			System.out.println("You won your bet of " + wager + " dollars.");
+			System.out.println("Your new wallet balance is " + player.wallet.getBalance());
+		}
+		else if (winnerCounter == -1) {
+			player.wallet.setBalance(player.wallet.getBalance() - wager);
+			System.out.println("You lost your bet of " + wager + " dollars.");
+			System.out.println("Your new wallet balance is " + player.wallet.getBalance());
+		}
+		else if (winnerCounter == 0) {
+			System.out.println("Your wager is returned");
+			System.out.println("Your wallet balance is " + player.wallet.getBalance());
+		}
+
+	}
+
+	private int checkForWinner(int playerScore, int dealerScore) {
+		int winnerCounter = 0;
 		if (dealerScore <= 21 && playerScore <= 21) {
 			if (dealerScore > playerScore) {
 				System.out.println("Dealer Wins!");
+				winnerCounter = -1;
 			}
 			else if (playerScore > dealerScore) {
 				System.out.println("Player Wins!");
+				winnerCounter = 1;
 			}
 			else {
 				System.out.println("The game is a draw!");
+				winnerCounter = 0;
 			}
 		}
+		return winnerCounter;
 	}
 
 	private int dealerTurn(Scanner scanner) {
@@ -72,7 +106,6 @@ public class Game {
 
 	private int playerTurn(Scanner scanner) {
 		boolean hit = true;
-
 		while (hit == true) {
 			checkForBust(player.hand);
 			if (player.hand.getValueOfHand() < 21) {
@@ -110,7 +143,7 @@ public class Game {
 	}
 
 	private boolean hitOrStand(Scanner scanner) {
-		System.out.println("Would you like to hit or stand? h/s");
+		System.out.println(player.name + ": Would you like to hit or stand? h/s");
 		while (true) {
 			char entry = scanner.next().charAt(0);
 			if (entry == 'h') {
@@ -132,6 +165,7 @@ public class Game {
 		System.out.println("The dealer places another card face up in front of you, you now have: ");
 		player.hand.addCard(deck.removeCard());
 		System.out.println(player.hand.getCardsInHand());
+		System.out.println(player.name + "'s total card value: " + player.hand.getValueOfHand());
 		printLines();
 	}
 
@@ -157,21 +191,23 @@ public class Game {
 
 	private void dealCards() {
 		deck.shuffle();
-		System.out.print("The dealer places one card face up in front of you, you have: ");
+		System.out.println("The dealer places one card face up in front of you.");
 		player.hand.addCard(deck.removeCard());
-		System.out.println(player.hand.getCardsInHand());
+		// System.out.println(player.hand.getCardsInHand());
 
 		System.out.println("The dealer places one card face down in front of him");
 		dealer.hand.addCard(deck.removeCard());
 
-		System.out.println("The dealer places another card face up in front of you, you now have: ");
+		System.out.println("The dealer places another card face up in front of you.");
 		player.hand.addCard(deck.removeCard());
-		System.out.println(player.hand.getCardsInHand());
+		// System.out.println(player.hand.getCardsInHand());
 
-		System.out.println("The dealer places a card face up in front of him, he is showing: ");
+		System.out.println("The dealer places a card face up in front of him.");
 		Card dealerFaceUp = deck.removeCard();
 		dealer.hand.addCard(dealerFaceUp);
-		System.out.println("[Face Down, " + dealerFaceUp + "]");
+		printLines();
+		System.out.println(player.name + " has: " + player.hand.getCardsInHand());
+		System.out.println("Dealer has: [Face Down, " + dealerFaceUp + "]");
 	}
 
 	private boolean checkForBust(Hand hand) {
@@ -183,6 +219,36 @@ public class Game {
 
 			return true;
 		}
+	}
+
+	private int placeBet(Scanner scanner) {
+		int wager = 0;
+		if (player.wallet.getBalance() < 5) {
+			System.out.println("You do not have enough money to play. GoodBye.");
+			System.exit(0);
+		}
+		while (true) {
+			System.out.println("How much would you like to wager? $5 minimum. Your current balance is "
+					+ player.wallet.getBalance());
+			wager = scanner.nextInt();
+			if (wager < 5) {
+				System.out.println("Must bet at least $5.");
+				continue;
+			}
+			if (wager > player.wallet.getBalance()) {
+				System.out.println(
+						"You only have $" + player.wallet.getBalance() + " in your wallet. Place a lower bet.");
+				continue;
+			}
+			if (player.wallet.getBalance() < 5) {
+				System.out.println("You do not have enough money to play. GoodBye.");
+				System.exit(0);
+			}
+			else {
+				break;
+			}
+		}
+		return wager;
 	}
 
 }
