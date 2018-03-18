@@ -13,7 +13,7 @@ Use classes to create a functional command line blackjack game. Implement implem
 
 ## Stretch Goals Applied
 
-I added functionality to allow the player to make bets. The player starts with a wallet of $100, and is asked to make a 5 dollar minimum bet each round. If the player runs out of money, the game ends. If the player enters a wager that is larger than the balance in their wallet.
+I added functionality to allow the player to make bets. The player starts with a wallet of $100, and is asked to make a 5 dollar minimum bet each round. If the player runs out of money, the game ends. If the player enters a wager that is larger than the balance in their wallet, they are told they cannot bet that much and are asked to make different bet.
 
 ## Known Issues
 
