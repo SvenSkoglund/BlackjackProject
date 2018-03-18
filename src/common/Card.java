@@ -1,6 +1,5 @@
 package common;
 
-
 public class Card {
 	// Create a class called Card.
 	//
